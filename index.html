@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>White Website</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <div class="keyboard-rectangle">
+      <button class="keyboard-key" type="button" tabindex="-1">H</button>
+    </div>
+    <script>
+      const keyButton = document.querySelector(".keyboard-rectangle");
+      let audioContext;
+
+      function playMechanicalClick() {
+        audioContext ??= new AudioContext();
+
+        const now = audioContext.currentTime;
+        const oscillator = audioContext.createOscillator();
+        const gain = audioContext.createGain();
+        const filter = audioContext.createBiquadFilter();
+
+        // lighter, plasticky
+oscillator.type = "sine";
+oscillator.frequency.setValueAtTime(300, now);
+oscillator.frequency.exponentialRampToValueAtTime(120, now + 0.035);
+filter.frequency.setValueAtTime(3200, now);
+gain.gain.exponentialRampToValueAtTime(0.001, now + 0.04);
+
+
+        oscillator.connect(filter);
+        filter.connect(gain);
+        gain.connect(audioContext.destination);
+
+        oscillator.start(now);
+        oscillator.stop(now + 0.05);
+      }
+
+      window.addEventListener("keydown", (event) => {
+        if (event.key.toLowerCase() === "h" && !event.repeat) {
+          keyButton.classList.add("is-pressed");
+          playMechanicalClick();
+        }
+      });
+
+      window.addEventListener("keyup", (event) => {
+        if (event.key.toLowerCase() === "h") {
+          keyButton.classList.remove("is-pressed");
+        }
+      });
+    </script>
+  </body>
+</html>
