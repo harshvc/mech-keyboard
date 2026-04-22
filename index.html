@@ -5,51 +5,209 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>White Website</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="script.js" defer></script>
   </head>
   <body>
-    <div class="keyboard-rectangle">
-      <button class="keyboard-key" type="button" tabindex="-1">H</button>
+    <div class="keyboard-row keyboard-row-back">
+
+      <div class="keyboard-rectangle" data-key="Capslock" style="--button-width: 94px;">
+        <div class="keyboard-base-border"></div>
+        <button class="keyboard-key" type="button" tabindex="-1" data-label="Caps"></button>
+      </div>
+
+      <div class="keyboard-rectangle" data-key="a">
+        <div class="keyboard-base-border"></div>
+        <button class="keyboard-key" type="button" tabindex="-1" data-label="A"></button>
+      </div>
+
+      <div class="keyboard-rectangle" data-key="s">
+        <div class="keyboard-base-border"></div>
+        <button class="keyboard-key" type="button" tabindex="-1" data-label="S"></button>
+      </div>
+
+      <div class="keyboard-rectangle" data-key="d">
+        <div class="keyboard-base-border"></div>
+        <button class="keyboard-key" type="button" tabindex="-1" data-label="D"></button>
+      </div>
+
+      <div class="keyboard-rectangle" data-key="f">
+        <div class="keyboard-base-border"></div>
+        <button class="keyboard-key" type="button" tabindex="-1" data-label="F"></button>
+      </div>
+
+       <div class="keyboard-rectangle" data-key="g">
+        <div class="keyboard-base-border"></div>
+        <button class="keyboard-key" type="button" tabindex="-1" data-label="G"></button>
+      </div>
+
+      <div class="keyboard-rectangle" data-key="h">
+        <div class="keyboard-base-border"></div>
+        <button class="keyboard-key" type="button" tabindex="-1" data-label="H"></button>
+      </div>
+
+      <div class="keyboard-rectangle" data-key="j">
+        <div class="keyboard-base-border"></div>
+        <button class="keyboard-key" type="button" tabindex="-1" data-label="J"></button>
+      </div>
+
+      <div class="keyboard-rectangle" data-key="k">
+        <div class="keyboard-base-border"></div>
+        <button class="keyboard-key" type="button" tabindex="-1" data-label="K"></button>
+      </div>
+
+      <div class="keyboard-rectangle" data-key="l">
+        <div class="keyboard-base-border"></div>
+        <button class="keyboard-key" type="button" tabindex="-1" data-label="L"></button>
+      </div>
+      
+      <div class="keyboard-rectangle" data-key=";">
+        <div class="keyboard-base-border"></div>
+        <button class="keyboard-key" type="button" tabindex="-1" data-label="; :"></button>
+      </div>
+
+      <div class="keyboard-rectangle" data-key="'">
+        <div class="keyboard-base-border"></div>
+        <button class="keyboard-key" type="button" tabindex="-1" data-label="' ''"></button>
+      </div>
+
+      <div class="keyboard-rectangle" data-key="enter" style="--button-width: 124px;">
+        <div class="keyboard-base-border"></div>
+        <button class="keyboard-key" type="button" tabindex="-1" data-label="⏎"></button>
+      </div>
+
+      <div class="keyboard-rectangle" data-key="home">
+        <div class="keyboard-base-border"></div>
+        <button class="keyboard-key" type="button" tabindex="-1" data-label="home"></button>
+      </div>
+      
     </div>
-    <script>
-      const keyButton = document.querySelector(".keyboard-rectangle");
-      let audioContext;
 
-      function playMechanicalClick() {
-        audioContext ??= new AudioContext();
+    <div class="keyboard-row keyboard-row-front">
 
-        const now = audioContext.currentTime;
-        const oscillator = audioContext.createOscillator();
-        const gain = audioContext.createGain();
-        const filter = audioContext.createBiquadFilter();
+      <div class="keyboard-rectangle" data-code="ShiftLeft" style="--button-width: 134px;">
+        <div class="keyboard-base-border"></div>
+        <button class="keyboard-key" type="button" tabindex="-1" data-label="Shift"></button>
+      </div>
 
-        // lighter, plasticky
-oscillator.type = "sine";
-oscillator.frequency.setValueAtTime(300, now);
-oscillator.frequency.exponentialRampToValueAtTime(120, now + 0.035);
-filter.frequency.setValueAtTime(3200, now);
-gain.gain.exponentialRampToValueAtTime(0.001, now + 0.04);
+      <div class="keyboard-rectangle" data-key="z">
+        <div class="keyboard-base-border"></div>
+        <button class="keyboard-key" type="button" tabindex="-1" data-label="Z"></button>
+      </div>
 
+      <div class="keyboard-rectangle" data-key="x">
+        <div class="keyboard-base-border"></div>
+        <button class="keyboard-key" type="button" tabindex="-1" data-label="X"></button>
+      </div>
 
-        oscillator.connect(filter);
-        filter.connect(gain);
-        gain.connect(audioContext.destination);
+      <div class="keyboard-rectangle" data-key="c">
+        <div class="keyboard-base-border"></div>
+        <button class="keyboard-key" type="button" tabindex="-1" data-label="C"></button>
+      </div>
 
-        oscillator.start(now);
-        oscillator.stop(now + 0.05);
-      }
+      <div class="keyboard-rectangle" data-key="v">
+        <div class="keyboard-base-border"></div>
+        <button class="keyboard-key" type="button" tabindex="-1" data-label="V"></button>
+      </div>
 
-      window.addEventListener("keydown", (event) => {
-        if (event.key.toLowerCase() === "h" && !event.repeat) {
-          keyButton.classList.add("is-pressed");
-          playMechanicalClick();
-        }
-      });
+       <div class="keyboard-rectangle" data-key="b">
+        <div class="keyboard-base-border"></div>
+        <button class="keyboard-key" type="button" tabindex="-1" data-label="B"></button>
+      </div>
 
-      window.addEventListener("keyup", (event) => {
-        if (event.key.toLowerCase() === "h") {
-          keyButton.classList.remove("is-pressed");
-        }
-      });
-    </script>
+      <div class="keyboard-rectangle" data-key="n">
+        <div class="keyboard-base-border"></div>
+        <button class="keyboard-key" type="button" tabindex="-1" data-label="N"></button>
+      </div>
+
+      <div class="keyboard-rectangle" data-key="m">
+        <div class="keyboard-base-border"></div>
+        <button class="keyboard-key" type="button" tabindex="-1" data-label="M"></button>
+      </div>
+
+      <div class="keyboard-rectangle" data-key=",">
+        <div class="keyboard-base-border"></div>
+        <button class="keyboard-key" type="button" tabindex="-1" data-label=", <"></button>
+      </div>
+
+      <div class="keyboard-rectangle" data-key=".">
+        <div class="keyboard-base-border"></div>
+        <button class="keyboard-key" type="button" tabindex="-1" data-label=". >"></button>
+      </div>
+      
+      <div class="keyboard-rectangle" data-key="/">
+        <div class="keyboard-base-border"></div>
+        <button class="keyboard-key" type="button" tabindex="-1" data-label="/ ?"></button>
+      </div>
+
+      <div class="keyboard-rectangle" data-code="ShiftRight" style="--button-width: 84px;">
+        <div class="keyboard-base-border"></div>
+        <button class="keyboard-key" type="button" tabindex="-1" data-label="Shift"></button>
+      </div>
+
+      <div class="keyboard-rectangle" data-key="ArrowUp">
+        <div class="keyboard-base-border"></div>
+        <button class="keyboard-key" type="button" tabindex="-1" data-label="⬆"></button>
+      </div>
+
+      <div class="keyboard-rectangle" data-key="end" data-code="End">
+        <div class="keyboard-base-border"></div>
+        <button class="keyboard-key" type="button" tabindex="-1" data-label="End"></button>
+      </div>
+      
+    </div>
+
+    <div class="keyboard-row keyboard-row-top">
+
+      <div class="keyboard-rectangle" data-key="ControlLeft" style="--button-width: 70px;">
+        <div class="keyboard-base-border"></div>
+        <button class="keyboard-key" type="button" tabindex="-1" data-label="Ctrl"></button>
+      </div>
+
+       <div class="keyboard-rectangle" data-key="option" style="--button-width: 70px;">
+        <div class="keyboard-base-border"></div>
+        <button class="keyboard-key" type="button" tabindex="-1" data-label="option"></button>
+      </div>
+
+      <div class="keyboard-rectangle" data-key="⌘" style="--button-width: 70px;">
+        <div class="keyboard-base-border"></div>
+        <button class="keyboard-key" type="button" tabindex="-1" data-label="⌘"></button>
+      </div>
+
+      <div class="keyboard-rectangle" data-key="space" style="--button-width: 340px;">
+        <div class="keyboard-base-border"></div>
+        <button class="keyboard-key" type="button" tabindex="-1" data-label="__"></button>
+      </div>
+
+      <div class="keyboard-rectangle" data-key="⌘">
+        <div class="keyboard-base-border"></div>
+        <button class="keyboard-key" type="button" tabindex="-1" data-label="⌘"></button>
+      </div>
+
+      <div class="keyboard-rectangle" data-key="">
+        <div class="keyboard-base-border"></div>
+        <button class="keyboard-key" type="button" tabindex="-1" data-label="fn"></button>
+      </div>
+      
+      <div class="keyboard-rectangle" data-key="ControlRight">
+        <div class="keyboard-base-border"></div>
+        <button class="keyboard-key" type="button" tabindex="-1" data-label="Ctrl"></button>
+      </div>
+
+      <div class="keyboard-rectangle" data-key="ArrowLeft">
+        <div class="keyboard-base-border"></div>
+        <button class="keyboard-key" type="button" tabindex="-1" data-label="⬅"></button>
+      </div>
+
+      <div class="keyboard-rectangle" data-key="ArrowDown">
+        <div class="keyboard-base-border"></div>
+        <button class="keyboard-key" type="button" tabindex="-1" data-label="⬇"></button>
+      </div>
+
+      <div class="keyboard-rectangle" data-key="ArrowRight">
+        <div class="keyboard-base-border"></div>
+        <button class="keyboard-key" type="button" tabindex="-1" data-label="➡"></button>
+      </div>
+      
+    </div>
   </body>
 </html>
