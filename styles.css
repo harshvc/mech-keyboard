@@ -34,6 +34,7 @@ body {
   --cap-fill: #f8fafc;
   --cap-border: #a2abb8;
   --label-color: #111827;
+  --row-background: #000000;
 }
 
 body {
@@ -54,19 +55,35 @@ body {
   transform: translateX(var(--row-x));
 }
 
-.keyboard-row-back {
+.keyboard {
+  padding: 2px;
+  background: var(--row-background);
+}
+
+.keyboard-row-deep {
+  z-index: 0;
+  --row-x: 0px;
+}
+
+.keyboard-row-rear {
   z-index: 1;
+  margin-top: -8px;
+  --row-x: 0px;
+}
+
+.keyboard-row-back {
+  z-index: 2;
   --row-x: 0px;
 }
 
 .keyboard-row-front {
-  z-index: 2;
+  z-index: 3;
   margin-top: -8px;
   --row-x: 0px;
 }
 
 .keyboard-row-top {
-  z-index: 3;
+  z-index: 4;
   margin-top: -8px;
   --row-x: 0px;
 }

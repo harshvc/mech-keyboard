@@ -53,6 +53,10 @@ window.addEventListener("keydown", (event) => {
   const pressedButtons = keyButtons.get(event.code.toLowerCase())
     ?? keyButtons.get(event.key.toLowerCase());
 
+  if (pressedButtons) {
+    event.preventDefault();
+  }
+
   if (pressedButtons && !event.repeat) {
     pressedButtons.forEach((button) => button.classList.add("is-pressed"));
     void playMechanicalClick();
@@ -64,6 +68,7 @@ window.addEventListener("keyup", (event) => {
     ?? keyButtons.get(event.key.toLowerCase());
 
   if (pressedButtons) {
+    event.preventDefault();
     pressedButtons.forEach((button) => button.classList.remove("is-pressed"));
   }
 });
