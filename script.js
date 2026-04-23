@@ -4,6 +4,7 @@ const themeOptions = document.querySelectorAll(".theme-option");
 const themeSwitcher = document.querySelector(".theme-switcher");
 const themeNames = ["theme-bluish", "theme-sand", "theme-cyberpunk", "theme-cute", "theme-old-money"];
 const themeStorageKey = "keyboard-theme";
+const masterVolume = 2;
 
 const soundThemes = {
   "theme-bluish": {
@@ -297,7 +298,7 @@ function applySoundLayer(context, now, destination, settings) {
   bodyFilter.type = "lowpass";
   bodyFilter.frequency.setValueAtTime(settings.filter, now);
 
-  bodyGain.gain.setValueAtTime(settings.bodyGain, now);
+  bodyGain.gain.setValueAtTime(settings.bodyGain * masterVolume, now);
   bodyGain.gain.exponentialRampToValueAtTime(0.001, now + settings.bodyDuration);
 
   body.connect(bodyFilter);
@@ -313,7 +314,7 @@ function applySoundLayer(context, now, destination, settings) {
   click.frequency.setValueAtTime(settings.clickStart, now);
   click.frequency.exponentialRampToValueAtTime(settings.clickEnd, now + settings.clickDuration);
 
-  clickGain.gain.setValueAtTime(settings.clickGain, now);
+  clickGain.gain.setValueAtTime(settings.clickGain * masterVolume, now);
   clickGain.gain.exponentialRampToValueAtTime(0.001, now + settings.clickDuration);
 
   click.connect(clickGain);
@@ -330,7 +331,7 @@ function applySoundLayer(context, now, destination, settings) {
   noiseFilter.frequency.setValueAtTime(settings.filter * 0.9, now);
   noiseFilter.Q.setValueAtTime(0.8, now);
 
-  noiseGain.gain.setValueAtTime(settings.noiseGain, now);
+  noiseGain.gain.setValueAtTime(settings.noiseGain * masterVolume, now);
   noiseGain.gain.exponentialRampToValueAtTime(0.001, now + settings.noiseDuration);
 
   noise.connect(noiseFilter);
