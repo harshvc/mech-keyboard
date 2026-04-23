@@ -7,8 +7,92 @@
     <link rel="stylesheet" href="styles.css">
     <script src="script.js" defer></script>
   </head>
-  <body>
+  <body class="theme-bluish">
     <main class="keyboard">
+    <div class="keyboard-frame">
+    <div class="keyboard-row keyboard-row-far">
+
+      <div class="keyboard-rectangle key-esc" data-code="Escape">
+        <div class="keyboard-base-border"></div>
+        <button class="keyboard-key" type="button" tabindex="-1" data-label="Esc"></button>
+      </div>
+
+      <div class="keyboard-rectangle" data-code="F1">
+        <div class="keyboard-base-border"></div>
+        <button class="keyboard-key" type="button" tabindex="-1" data-label="F1"></button>
+      </div>
+
+      <div class="keyboard-rectangle" data-code="F2">
+        <div class="keyboard-base-border"></div>
+        <button class="keyboard-key" type="button" tabindex="-1" data-label="F2"></button>
+      </div>
+
+      <div class="keyboard-rectangle" data-code="F3">
+        <div class="keyboard-base-border"></div>
+        <button class="keyboard-key" type="button" tabindex="-1" data-label="F3"></button>
+      </div>
+
+      <div class="keyboard-rectangle" data-code="F4">
+        <div class="keyboard-base-border"></div>
+        <button class="keyboard-key" type="button" tabindex="-1" data-label="F4"></button>
+      </div>
+
+      <div class="keyboard-rectangle key-f5" data-code="F5">
+        <div class="keyboard-base-border"></div>
+        <button class="keyboard-key" type="button" tabindex="-1" data-label="F5"></button>
+      </div>
+
+      <div class="keyboard-rectangle key-f6" data-code="F6">
+        <div class="keyboard-base-border"></div>
+        <button class="keyboard-key" type="button" tabindex="-1" data-label="F6"></button>
+      </div>
+
+      <div class="keyboard-rectangle key-f7" data-code="F7">
+        <div class="keyboard-base-border"></div>
+        <button class="keyboard-key" type="button" tabindex="-1" data-label="F7"></button>
+      </div>
+
+      <div class="keyboard-rectangle key-f8" data-code="F8">
+        <div class="keyboard-base-border"></div>
+        <button class="keyboard-key" type="button" tabindex="-1" data-label="F8"></button>
+      </div>
+
+      <div class="keyboard-rectangle key-f9" data-code="F9">
+        <div class="keyboard-base-border"></div>
+        <button class="keyboard-key" type="button" tabindex="-1" data-label="F9"></button>
+      </div>
+
+      <div class="keyboard-rectangle" data-code="F10">
+        <div class="keyboard-base-border"></div>
+        <button class="keyboard-key" type="button" tabindex="-1" data-label="F10"></button>
+      </div>
+
+      <div class="keyboard-rectangle" data-code="F11">
+        <div class="keyboard-base-border"></div>
+        <button class="keyboard-key" type="button" tabindex="-1" data-label="F11"></button>
+      </div>
+
+      <div class="keyboard-rectangle" data-code="F12">
+        <div class="keyboard-base-border"></div>
+        <button class="keyboard-key" type="button" tabindex="-1" data-label="F12"></button>
+      </div>
+
+      <div class="keyboard-rectangle key-print-screen" data-code="PrintScreen">
+        <div class="keyboard-base-border"></div>
+        <button class="keyboard-key" type="button" tabindex="-1" data-label="PrtSc"></button>
+      </div>
+
+      <div class="keyboard-rectangle key-pause" data-code="Pause">
+        <div class="keyboard-base-border"></div>
+        <button class="keyboard-key" type="button" tabindex="-1" data-label="Pause"></button>
+      </div>
+
+      <div class="keyboard-rectangle key-delete" data-code="Delete">
+        <div class="keyboard-base-border"></div>
+        <button class="keyboard-key" type="button" tabindex="-1" data-label="Del"></button>
+      </div>
+      
+    </div>
     <div class="keyboard-row keyboard-row-deep">
 
       <div class="keyboard-rectangle" data-key="`">
@@ -76,21 +160,21 @@
         <button class="keyboard-key" type="button" tabindex="-1" data-label="= +"></button>
       </div>
 
-      <div class="keyboard-rectangle" data-key="Backspace" style="--button-width: 108px;">
+      <div class="keyboard-rectangle key-backspace" data-key="Backspace" style="--button-width: 108px;">
         <div class="keyboard-base-border"></div>
         <button class="keyboard-key" type="button" tabindex="-1" data-label="⟵"></button>
       </div>
 
-      <div class="keyboard-rectangle" data-key="PageUp">
+      <div class="keyboard-rectangle key-page-up" data-key="PageUp">
         <div class="keyboard-base-border"></div>
         <button class="keyboard-key" type="button" tabindex="-1" data-label="PgUp"></button>
       </div>
       
     </div>
 
-    <div class="keyboard-row keyboard-row-rear">
+    <div class="keyboard-row keyboard-row-rear">                                            
 
-      <div class="keyboard-rectangle" data-key="Tab" style="--button-width: 80px;">
+      <div class="keyboard-rectangle key-tab" data-key="Tab" style="--button-width: 80px;">
         <div class="keyboard-base-border"></div>
         <button class="keyboard-key" type="button" tabindex="-1" data-label="Tab"></button>
       </div>
@@ -155,12 +239,12 @@
         <button class="keyboard-key" type="button" tabindex="-1" data-label="] }"></button>
       </div>
 
-      <div class="keyboard-rectangle" data-key="\" style="--button-width: 82px;">
+      <div class="keyboard-rectangle key-backslash" data-key="\" style="--button-width: 82px;">
         <div class="keyboard-base-border"></div>
         <button class="keyboard-key" type="button" tabindex="-1" data-label="\ |"></button>
       </div>
 
-      <div class="keyboard-rectangle" data-key="PageDown">
+      <div class="keyboard-rectangle key-page-down" data-key="PageDown">
         <div class="keyboard-base-border"></div>
         <button class="keyboard-key" type="button" tabindex="-1" data-label="PgDn"></button>
       </div>
@@ -169,7 +253,7 @@
 
     <div class="keyboard-row keyboard-row-back">
 
-      <div class="keyboard-rectangle" data-key="Capslock" style="--button-width: 94px;">
+      <div class="keyboard-rectangle key-caps-lock" data-key="Capslock" style="--button-width: 94px;">
         <div class="keyboard-base-border"></div>
         <button class="keyboard-key" type="button" tabindex="-1" data-label="Caps"></button>
       </div>
@@ -229,12 +313,12 @@
         <button class="keyboard-key" type="button" tabindex="-1" data-label="' ''"></button>
       </div>
 
-      <div class="keyboard-rectangle" data-key="enter" style="--button-width: 124px;">
+      <div class="keyboard-rectangle key-return" data-key="enter" style="--button-width: 124px;">
         <div class="keyboard-base-border"></div>
         <button class="keyboard-key" type="button" tabindex="-1" data-label="⏎"></button>
       </div>
 
-      <div class="keyboard-rectangle" data-key="home">
+      <div class="keyboard-rectangle key-home" data-key="home">
         <div class="keyboard-base-border"></div>
         <button class="keyboard-key" type="button" tabindex="-1" data-label="home"></button>
       </div>
@@ -243,7 +327,7 @@
 
     <div class="keyboard-row keyboard-row-front">
 
-      <div class="keyboard-rectangle" data-code="ShiftLeft" style="--button-width: 134px;">
+      <div class="keyboard-rectangle key-shift-left" data-code="ShiftLeft" style="--button-width: 134px;">
         <div class="keyboard-base-border"></div>
         <button class="keyboard-key" type="button" tabindex="-1" data-label="Shift"></button>
       </div>
@@ -298,7 +382,7 @@
         <button class="keyboard-key" type="button" tabindex="-1" data-label="/ ?"></button>
       </div>
 
-      <div class="keyboard-rectangle" data-code="ShiftRight" style="--button-width: 84px;">
+      <div class="keyboard-rectangle key-shift-right" data-code="ShiftRight" style="--button-width: 84px;">
         <div class="keyboard-base-border"></div>
         <button class="keyboard-key" type="button" tabindex="-1" data-label="Shift"></button>
       </div>
@@ -308,7 +392,7 @@
         <button class="keyboard-key" type="button" tabindex="-1" data-label="⬆"></button>
       </div>
 
-      <div class="keyboard-rectangle" data-key="end" data-code="End">
+      <div class="keyboard-rectangle key-end" data-key="end" data-code="End">
         <div class="keyboard-base-border"></div>
         <button class="keyboard-key" type="button" tabindex="-1" data-label="End"></button>
       </div>
@@ -317,17 +401,17 @@
 
     <div class="keyboard-row keyboard-row-top">
 
-      <div class="keyboard-rectangle" data-key="ControlLeft" style="--button-width: 70px;">
+      <div class="keyboard-rectangle key-control-left" data-key="ControlLeft" style="--button-width: 70px;">
         <div class="keyboard-base-border"></div>
         <button class="keyboard-key" type="button" tabindex="-1" data-label="Ctrl"></button>
       </div>
 
-       <div class="keyboard-rectangle" data-key="option" style="--button-width: 70px;">
+       <div class="keyboard-rectangle key-option" data-key="option" style="--button-width: 70px;">
         <div class="keyboard-base-border"></div>
-        <button class="keyboard-key" type="button" tabindex="-1" data-label="option"></button>
+        <button class="keyboard-key" type="button" tabindex="-1" data-label="Option"></button>
       </div>
 
-      <div class="keyboard-rectangle" data-key="⌘" style="--button-width: 70px;">
+      <div class="keyboard-rectangle key-command-left" data-key="⌘" style="--button-width: 70px;">
         <div class="keyboard-base-border"></div>
         <button class="keyboard-key" type="button" tabindex="-1" data-label="⌘"></button>
       </div>
@@ -337,17 +421,17 @@
         <button class="keyboard-key" type="button" tabindex="-1" data-label="__"></button>
       </div>
 
-      <div class="keyboard-rectangle" data-key="⌘">
+      <div class="keyboard-rectangle key-command-right" data-key="⌘">
         <div class="keyboard-base-border"></div>
         <button class="keyboard-key" type="button" tabindex="-1" data-label="⌘"></button>
       </div>
 
-      <div class="keyboard-rectangle" data-key="">
+      <div class="keyboard-rectangle key-fn" data-key="">
         <div class="keyboard-base-border"></div>
         <button class="keyboard-key" type="button" tabindex="-1" data-label="fn"></button>
       </div>
       
-      <div class="keyboard-rectangle" data-key="ControlRight">
+      <div class="keyboard-rectangle key-control-right" data-key="ControlRight">
         <div class="keyboard-base-border"></div>
         <button class="keyboard-key" type="button" tabindex="-1" data-label="Ctrl"></button>
       </div>
@@ -368,6 +452,15 @@
       </div>
       
     </div>
+    </div>
     </main>
+    <nav class="theme-switcher" aria-label="Keyboard themes">
+      <span class="theme-highlight" aria-hidden="true"></span>
+      <button class="theme-option is-active" type="button" data-theme="theme-bluish" aria-pressed="true">Bluish</button>
+      <button class="theme-option" type="button" data-theme="theme-sand" aria-pressed="false">Sand</button>
+      <button class="theme-option" type="button" data-theme="theme-cyberpunk" aria-pressed="false">Cyberpunk</button>
+      <button class="theme-option" type="button" data-theme="theme-cute" aria-pressed="false">Cute</button>
+      <button class="theme-option" type="button" data-theme="theme-old-money" aria-pressed="false">Old Money</button>
+    </nav>
   </body>
 </html>
