@@ -1,10 +1,64 @@
 const keyButtons = new Map();
-
+const keyboard = document.querySelector(".keyboard");
+const keyboardRects = keyboard?.querySelectorAll(".keyboard-rectangle") ?? [];
+const introKeys = document.querySelectorAll(".intro-screen .intro-key");
 const themeOptions = document.querySelectorAll(".theme-option");
 const themeSwitcher = document.querySelector(".theme-switcher");
 const themeNames = ["theme-bluish", "theme-sand", "theme-cyberpunk", "theme-cute", "theme-old-money"];
 const themeStorageKey = "keyboard-theme";
 const masterVolume = 2;
+const showcaseStepMs = 135;
+const showcaseLeadInMs = 260;
+const dualLegendMap = {
+  "`": { primary: "`", secondary: "~" },
+  "1": { primary: "1", secondary: "!" },
+  "2": { primary: "2", secondary: "@" },
+  "3": { primary: "3", secondary: "#" },
+  "4": { primary: "4", secondary: "$" },
+  "5": { primary: "5", secondary: "%" },
+  "6": { primary: "6", secondary: "^" },
+  "7": { primary: "7", secondary: "&" },
+  "8": { primary: "8", secondary: "*" },
+  "9": { primary: "9", secondary: "(" },
+  "0": { primary: "0", secondary: ")" },
+  "-": { primary: "-", secondary: "_" },
+  "=": { primary: "=", secondary: "+" },
+  "[": { primary: "[", secondary: "{" },
+  "]": { primary: "]", secondary: "}" },
+  "\\": { primary: "\\", secondary: "|" },
+  ";": { primary: ";", secondary: ":" },
+  "'": { primary: "'", secondary: "\"" },
+  ",": { primary: ",", secondary: "<" },
+  ".": { primary: ".", secondary: ">" },
+  "/": { primary: "/", secondary: "?" },
+};
+const longLegendKeys = new Set([
+  "tab",
+  "capslock",
+  "backspace",
+  "enter",
+  "shiftleft",
+  "shiftright",
+  "controlleft",
+  "controlright",
+  "pageup",
+  "pagedown",
+  "printscreen",
+  "pause",
+  "delete",
+  "home",
+  "end",
+  "option",
+]);
+let showcaseTimerIds = [];
+let showcaseCancelled = false;
+let audioUnlocked = false;
+let pendingAudibleShowcase = false;
+let hasEnteredExperience = false;
+let isEnteringExperience = false;
+let introProgress = 0;
+let introErrorTimerId = 0;
+const introPhrase = "letsgo";
 
 const soundThemes = {
   "theme-bluish": {
@@ -209,13 +263,13 @@ const soundThemes = {
   },
 };
 
-document.querySelectorAll(".keyboard-rectangle[data-key], .keyboard-rectangle[data-code]").forEach((button) => {
+keyboardRects.forEach((button) => {
   const key = (button.dataset.code ?? button.dataset.key).toLowerCase();
   registerButton(key, button);
 });
 
 document.querySelectorAll(".keyboard-key").forEach((keyCap) => {
-  if (keyCap.dataset.label === "\u2318") {
+  if (normalizeLegendLabel(keyCap.dataset.label) === "\u2318") {
     registerButton("MetaRight", keyCap.closest(".keyboard-rectangle"));
   }
 });
@@ -223,11 +277,89 @@ document.querySelectorAll(".keyboard-key").forEach((keyCap) => {
 let audioContext;
 
 function registerButton(key, button) {
+  if (!key) {
+    return;
+  }
+
   const normalizedKey = key.toLowerCase();
   const buttons = keyButtons.get(normalizedKey) ?? [];
 
   buttons.push(button);
   keyButtons.set(normalizedKey, buttons);
+}
+
+function normalizeLegendLabel(label) {
+  const replacements = {
+    "â¬†": "\u2191",
+    "â¬…": "\u2190",
+    "â¬‡": "\u2193",
+    "âž¡": "\u2192",
+    "âŒ˜": "\u2318",
+  };
+
+  return replacements[label] ?? label;
+}
+
+function getButtonKey(button) {
+  return (button.dataset.code ?? button.dataset.key ?? "").toLowerCase();
+}
+
+function getLegendSpec(button, keyCap) {
+  const key = getButtonKey(button);
+  const label = normalizeLegendLabel(keyCap.dataset.label ?? "");
+
+  if (key === "space" || label === "__") {
+    return { layout: "space", primary: "" };
+  }
+
+  if (dualLegendMap[key]) {
+    return { layout: "dual", ...dualLegendMap[key] };
+  }
+
+  if (longLegendKeys.has(key) || label.length > 4) {
+    return { layout: "long", primary: label };
+  }
+
+  return { layout: "single", primary: label };
+}
+
+function renderKeyLegends() {
+  keyboardRects.forEach((button) => {
+    renderLegendForButton(button);
+  });
+}
+
+function renderLegendForButton(button) {
+  const keyCap = button.querySelector(".keyboard-key");
+
+  if (!keyCap) {
+    return;
+  }
+
+  const spec = getLegendSpec(button, keyCap);
+  const legend = document.createElement("span");
+  const primary = document.createElement("span");
+
+  legend.className = `key-legend is-${spec.layout}`;
+  primary.className = "legend-primary";
+  primary.textContent = spec.primary;
+  legend.append(primary);
+
+  if (spec.layout === "dual") {
+    const secondary = document.createElement("span");
+
+    secondary.className = "legend-secondary";
+    secondary.textContent = spec.secondary;
+    legend.append(secondary);
+  }
+
+  keyCap.replaceChildren(legend);
+}
+
+function renderIntroLegends() {
+  introKeys.forEach((button) => {
+    renderLegendForButton(button);
+  });
 }
 
 function getCurrentThemeName() {
@@ -272,6 +404,71 @@ function getSoundVariant(button) {
   }
 
   return "normal";
+}
+
+function pulseButtons(buttons, duration = 110) {
+  buttons.forEach((button) => button.classList.add("is-pressed"));
+  window.setTimeout(() => {
+    buttons.forEach((button) => button.classList.remove("is-pressed"));
+  }, duration);
+}
+
+function clearShowcaseTimers() {
+  showcaseTimerIds.forEach((timerId) => window.clearTimeout(timerId));
+  showcaseTimerIds = [];
+  keyboardRects.forEach((button) => button.classList.remove("is-pressed"));
+}
+
+function cancelShowcase() {
+  showcaseCancelled = true;
+  clearShowcaseTimers();
+}
+
+function getShowcaseCandidates() {
+  return Array.from(keyboardRects).filter((button) => getButtonKey(button) && getButtonKey(button) !== "");
+}
+
+function startShowcase() {
+  if (!hasEnteredExperience) {
+    return;
+  }
+
+  const candidates = getShowcaseCandidates();
+
+  if (!candidates.length) {
+    return;
+  }
+
+  showcaseCancelled = false;
+  clearShowcaseTimers();
+
+  for (let index = 0; index < 26; index += 1) {
+    const timerId = window.setTimeout(() => {
+      if (showcaseCancelled) {
+        return;
+      }
+
+      const button = candidates[Math.floor(Math.random() * candidates.length)];
+
+      pulseButtons([button]);
+      void playMechanicalClick(button).then((played) => {
+        if (!played) {
+          pendingAudibleShowcase = true;
+        }
+      });
+    }, showcaseLeadInMs + (index * showcaseStepMs));
+
+    showcaseTimerIds.push(timerId);
+  }
+}
+
+function startAudibleShowcaseReplay() {
+  if (!pendingAudibleShowcase) {
+    return;
+  }
+
+  pendingAudibleShowcase = false;
+  startShowcase();
 }
 
 function createNoiseBuffer(context) {
@@ -344,8 +541,18 @@ function applySoundLayer(context, now, destination, settings) {
 async function playMechanicalClick(button) {
   audioContext ??= new AudioContext();
 
-  if (audioContext.state === "suspended") {
-    await audioContext.resume();
+  try {
+    if (audioContext.state === "suspended") {
+      await audioContext.resume();
+    }
+  } catch {
+    return false;
+  }
+
+  audioUnlocked = audioContext.state === "running";
+
+  if (!audioUnlocked) {
+    return false;
   }
 
   const theme = soundThemes[getCurrentThemeName()] ?? soundThemes["theme-bluish"];
@@ -354,6 +561,95 @@ async function playMechanicalClick(button) {
   const now = audioContext.currentTime;
 
   applySoundLayer(audioContext, now, audioContext.destination, settings);
+  return true;
+}
+
+async function unlockAudioFromGesture() {
+  if (audioUnlocked) {
+    startAudibleShowcaseReplay();
+    return;
+  }
+
+  const played = await playMechanicalClick(null);
+
+  if (played) {
+    startAudibleShowcaseReplay();
+  }
+}
+
+async function enterExperience() {
+  if (hasEnteredExperience || isEnteringExperience) {
+    return;
+  }
+
+  isEnteringExperience = true;
+  document.body.classList.add("is-entering");
+  hasEnteredExperience = true;
+  document.body.classList.remove("is-locked");
+  await unlockAudioFromGesture();
+  startShowcase();
+  window.setTimeout(() => {
+    document.body.classList.remove("is-entering");
+    isEnteringExperience = false;
+  }, 360);
+}
+
+function renderIntroProgress() {
+  introKeys.forEach((key, index) => {
+    key.classList.toggle("is-complete", index < introProgress);
+    key.classList.toggle("is-active", index === introProgress && introProgress < introPhrase.length);
+    key.classList.toggle("is-hidden", index > introProgress);
+  });
+}
+
+function flashIntroError() {
+  window.clearTimeout(introErrorTimerId);
+  introKeys.forEach((key) => key.classList.add("is-error"));
+  introErrorTimerId = window.setTimeout(() => {
+    introKeys.forEach((key) => key.classList.remove("is-error"));
+    renderIntroProgress();
+  }, 220);
+}
+
+function handleIntroInput(event) {
+  if (!document.body.classList.contains("is-locked") || hasEnteredExperience || isEnteringExperience) {
+    return false;
+  }
+
+  const expectedCharacter = introPhrase[introProgress];
+  const actualCharacter = event.key === " " ? " " : event.key.toLowerCase();
+
+  if (event.key === "Backspace") {
+    introProgress = Math.max(0, introProgress - 1);
+    renderIntroProgress();
+    return true;
+  }
+
+  if (event.key.length !== 1 && event.key !== " ") {
+    return false;
+  }
+
+  if (actualCharacter === expectedCharacter) {
+    const currentIntroKey = introKeys[introProgress];
+
+    if (currentIntroKey) {
+      pulseButtons([currentIntroKey], 90);
+      void playMechanicalClick(currentIntroKey);
+    }
+
+    introProgress += 1;
+    renderIntroProgress();
+
+    if (introProgress >= introPhrase.length) {
+      void enterExperience();
+    }
+  } else {
+    introProgress = 0;
+    renderIntroProgress();
+    flashIntroError();
+  }
+
+  return true;
 }
 
 function updateThemeHighlight() {
@@ -389,6 +685,13 @@ function applyTheme(theme, persist = true) {
 }
 
 window.addEventListener("keydown", (event) => {
+  if (handleIntroInput(event)) {
+    event.preventDefault();
+    return;
+  }
+
+  cancelShowcase();
+
   const pressedButtons = keyButtons.get(event.code.toLowerCase())
     ?? keyButtons.get(event.key.toLowerCase());
 
@@ -418,9 +721,21 @@ themeOptions.forEach((option) => {
   });
 });
 
+window.addEventListener("pointerdown", () => {
+  if (!hasEnteredExperience) {
+    return;
+  }
+
+  void unlockAudioFromGesture();
+}, { passive: true });
+
 const savedTheme = localStorage.getItem(themeStorageKey);
 const defaultTheme = themeNames.find((themeName) => document.body.classList.contains(themeName)) ?? themeNames[0];
 const initialTheme = themeNames.includes(savedTheme) ? savedTheme : defaultTheme;
 
+renderKeyLegends();
+renderIntroLegends();
 applyTheme(initialTheme, false);
+document.body.classList.add("is-locked");
+renderIntroProgress();
 window.addEventListener("resize", updateThemeHighlight);
